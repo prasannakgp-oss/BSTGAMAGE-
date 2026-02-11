@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BST Academy - Prabath Gamage</title>
+    <meta name="description"
+        content="Advanced Level Biosystem Technology Tuition by Prabath Gamage. Join the best BST class for guaranteed results.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bst: {
+                            alien: '#ccff00',
+                            brand: '#22c55e',
+                            dark: '#0a0f1c',
+                            panel: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-glow {
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0f1c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ccff00;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-bst-dark text-white font-sans antialiased overflow-x-hidden selection:bg-bst-alien selection:text-black">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-bst-dark/90 backdrop-blur-md transition-all duration-300"
+        id="navbar">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse group">
+                <img src="./images/logo_ref.jpg" alt="BST Logo"
+                    class="h-12 md:h-14 object-contain filter drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] group-hover:drop-shadow-[0_0_12px_rgba(204,255,0,0.8)] transition-all duration-300">
+            </a>
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <a href="https://wa.me/94781048790" target="_blank"
+                    class="hidden md:flex items-center gap-2 text-black bg-bst-brand hover:bg-bst-alien focus:ring-4 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/20">
+                    <i data-lucide="phone"></i>
+                    <span>Join Now</span>
+                </a>
+                <button data-collapse-toggle="navbar-sticky" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                    aria-controls="navbar-sticky" aria-expanded="false" id="menu-toggle">
+                    <span class="sr-only">Open main menu</span>
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul
+                    class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+                    <li><a href="#"
+                            class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-bst-brand md:p-0"
+                            aria-current="page">Home</a></li>
+                    <li><a href="#about"
+                            class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-bst-alien md:p-0 transition-colors">About</a>
+                    </li>
+                    <li><a href="#classes"
+                            class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-bst-alien md:p-0 transition-colors">Classes</a>
+                    </li>
+                    <li><a href="#results"
+                            class="block py-2 px-3 text-gray-300 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-bst-alien md:p-0 transition-colors">Results</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="hidden md:hidden bg-bst-panel border-t border-white/10" id="mobile-menu">
+            <ul class="flex flex-col p-4 font-medium space-y-2">
+                <li><a href="#" class="block py-2 px-3 text-white hover:text-bst-brand rounded">Home</a></li>
+                <li><a href="#about" class="block py-2 px-3 text-gray-300 hover:text-bst-brand rounded">About</a></li>
+                <li><a href="#classes" class="block py-2 px-3 text-gray-300 hover:text-bst-brand rounded">Classes</a>
+                </li>
+                <li><a href="#results" class="block py-2 px-3 text-gray-300 hover:text-bst-brand rounded">Results</a>
+                </li>
+                <li>
+                    <a href="https://wa.me/94781048790" target="_blank"
+                        class="flex items-center gap-2 text-black bg-bst-brand hover:bg-bst-alien font-medium rounded-lg text-sm px-5 py-2.5 mt-2 justify-center">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        <span>Join Now</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-bst-brand/20 rounded-full blur-[100px] animate-pulse">
+            </div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-bst-alien/10 rounded-full blur-[100px] animate-pulse"
+                style="animation-duration: 4s;"></div>
+            <div
+                class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 hover:opacity-30 transition-opacity duration-1000">
+            </div>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-4 text-center">
+            <div class="reveal active flex flex-col items-center">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-bst-brand/10 border border-bst-brand/30 text-bst-brand text-sm font-medium mb-6 uppercase tracking-wider">
+                    #1 Biosystem Technology Class
+                </span>
+                <h1
+                    class="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
+                    Master <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-bst-brand to-bst-alien">BST</span>
+                    <br />
+                    <span
+                        class="block py-2 text-4xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-bst-alien via-white to-bst-brand animate-pulse drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]">
+                        ජෛවපද්ධති තාක්ෂණවේදය
+                    </span>
+                    <span class="text-white text-3xl md:text-5xl">with Prabath Gamage</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Unlock your potential with the most comprehensive and results-oriented Tuition class for Advanced
+                    Level Biosystem Technology.
+                </p>
+
+                <div class="flex flex-col md:flex-row gap-4 justify-center items-center w-full md:w-auto">
+                    <a href="#classes"
+                        class="group relative px-8 py-4 bg-bst-brand hover:bg-bst-alien text-black font-bold rounded-lg transition-all duration-300 flex items-center gap-2 w-full md:w-auto justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(204,255,0,0.5)]">
+                        <span>Start Learning</span>
+                        <i data-lucide="chevron-right"
+                            class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#about"
+                        class="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-medium rounded-lg backdrop-blur-sm border border-white/10 transition-colors w-full md:w-auto flex justify-center items-center gap-2 group">
+                        <span>Learn More</span>
+                        <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Floating Elements (Decoration) -->
+            <div class="absolute -z-10 top-1/2 left-0 w-24 h-24 border border-bst-brand/20 rounded-full animate-float hidden md:block"
+                style="left: 10%;"></div>
+            <div class="absolute -z-10 bottom-20 right-0 w-32 h-32 border border-bst-alien/20 rounded-full animate-float hidden md:block"
+                style="right: 10%; animation-delay: 1s;"></div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-10 bg-bst-panel border-y border-white/5">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/10">
+                <div class="reveal">
+                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-1"><span class="counter"
+                            data-target="10">0</span>+</h3>
+                    <p class="text-gray-500 text-sm uppercase tracking-wider">Years Experience</p>
+                </div>
+                <div class="reveal" style="transition-delay: 100ms;">
+                    <h3 class="text-3xl md:text-4xl font-bold text-bst-brand mb-1"><span class="counter"
+                            data-target="500">0</span>+</h3>
+                    <p class="text-gray-500 text-sm uppercase tracking-wider">A Passes</p>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-3xl md:text-4xl font-bold text-bst-alien mb-1"><span class="counter"
+                            data-target="50">0</span>+</h3>
+                    <p class="text-gray-500 text-sm uppercase tracking-wider">District Ranks</p>
+                </div>
+                <div class="reveal" style="transition-delay: 300ms;">
+                    <h3 class="text-3xl md:text-4xl font-bold text-blue-400 mb-1">100%</h3>
+                    <p class="text-gray-500 text-sm uppercase tracking-wider">Dedication</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative reveal">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-bst-brand/20 to-transparent rounded-2xl transform rotate-3 scale-105">
+                    </div>
+                    <img src="./images/tutor.jpg" alt="Prabath Gamage"
+                        class="relative rounded-2xl shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-500 w-full object-cover aspect-[3/4]">
+
+                    <!-- Decorative Badge -->
+                    <div
+                        class="absolute -bottom-6 -right-6 bg-bst-panel p-4 rounded-xl border border-white/10 shadow-xl flex items-center gap-3">
+                        <div class="bg-bst-brand/20 p-2 rounded-lg">
+                            <i data-lucide="award" class="text-bst-brand w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-bold">Best BST Tutor</p>
+                            <p class="text-xs text-gray-400">Award Winner</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <h2 class="text-base text-bst-brand font-semibold tracking-wide uppercase mb-2">About The Teacher
+                    </h2>
+                    <h3 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">Prabath Gamage</h3>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        With over a decade of teaching experience, Prabath Sir has revolutionized how Bisosytem
+                        Technology is taught. His unique approach combines theoretical depth with practical application,
+                        ensuring students not only pass exams but truly understand the subject.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-bst-alien w-6 h-6 shrink-0 mt-1"></i>
+                            <span class="text-gray-300">Expert guidance on complex biological systems and technology
+                                applications.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-bst-alien w-6 h-6 shrink-0 mt-1"></i>
+                            <span class="text-gray-300">Structured lesson plans covering Theory, Revision, and Paper
+                                discussions.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-bst-alien w-6 h-6 shrink-0 mt-1"></i>
+                            <span class="text-gray-300">Individual attention to identify and improve weak areas.</span>
+                        </li>
+                    </ul>
+                    <a href="#classes"
+                        class="text-white border-b border-bst-brand pb-1 hover:text-bst-brand transition-colors inline-flex items-center gap-2">
+                        View Class Schedule <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / Classes Section -->
+    <section id="classes" class="py-24 bg-bst-panel relative">
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-4">Our Programs</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Structured learning paths designed for maximum efficiency and
+                    results.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="glass-panel p-8 rounded-2xl hover:border-bst-brand/50 transition-all duration-300 group reveal flex flex-col h-full">
+                    <div
+                        class="w-14 h-14 bg-bst-brand/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-bst-brand/20 transition-colors">
+                        <i data-lucide="book-open" class="w-8 h-8 text-bst-brand"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Theory Class</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-3">Comprehensive coverage of the syllabus with detailed
+                        notes and explanations. Perfect for building a strong foundation.</p>
+                    <ul class="text-sm text-gray-400 space-y-2 mb-6 border-t border-white/10 pt-4 flex-grow">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-bst-brand"></i>
+                            Full Syllabus Coverage</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-bst-brand"></i>
+                            Printed Tutes</li>
+                    </ul>
+                    <button onclick="openModal()"
+                        class="w-full py-3 rounded-lg bg-white/5 hover:bg-bst-brand hover:text-black font-medium transition-all duration-300 border border-white/10 group-hover:border-bst-brand/50">
+                        Register Now
+                    </button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-2xl border-bst-brand/30 bg-gradient-to-b from-bst-brand/5 to-transparent relative hover:border-bst-brand/50 transition-all duration-300 group reveal flex flex-col h-full"
+                    style="transition-delay: 100ms;">
+                    <div
+                        class="absolute top-0 right-0 bg-bst-brand text-black text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                        POPULAR</div>
+                    <div
+                        class="w-14 h-14 bg-bst-alien/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-bst-alien/20 transition-colors">
+                        <i data-lucide="zap" class="w-8 h-8 text-bst-alien"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Revision + Paper</h3>
+                    <p class="text-gray-400 mb-6">Fast-tracked revision of key concepts combined with intensive past
+                        paper discussions to boost exam readiness.</p>
+                    <ul class="text-sm text-gray-400 space-y-2 mb-6 border-t border-white/10 pt-4 flex-grow">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-bst-alien"></i>
+                            20+ Past Papers</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-bst-alien"></i>
+                            Time Management Tips</li>
+                    </ul>
+                    <button onclick="openModal()"
+                        class="w-full py-3 rounded-lg bg-bst-brand hover:bg-bst-alien text-black font-bold transition-all duration-300 shadow-lg shadow-bst-brand/20">
+                        Register Now
+                    </button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 rounded-2xl hover:border-bst-brand/50 transition-all duration-300 group reveal flex flex-col h-full"
+                    style="transition-delay: 200ms;">
+                    <div
+                        class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+                        <i data-lucide="users" class="w-8 h-8 text-blue-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Group Classes</h3>
+                    <p class="text-gray-400 mb-6">Small group sessions tailored for students who need extra attention
+                        and personalized guidance.</p>
+                    <ul class="text-sm text-gray-400 space-y-2 mb-6 border-t border-white/10 pt-4 flex-grow">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500"></i>
+                            Doubt Clearance</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-500"></i>
+                            Flexible Timings</li>
+                    </ul>
+                    <button onclick="openModal()"
+                        class="w-full py-3 rounded-lg bg-white/5 hover:bg-blue-500 hover:text-white font-medium transition-all duration-300 border border-white/10 group-hover:border-blue-500/50">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Contact -->
+    <section class="py-24 relative overflow-hidden text-center">
+        <div class="absolute inset-0 bg-bst-brand/5"></div>
+        <div class="container mx-auto px-4 relative z-10 reveal">
+            <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-8">Ready to Excel in BST?</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join the class that produces the island's best
+                results. Start your journey today.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://wa.me/94781048790" target="_blank"
+                    class="px-8 py-4 bg-bst-brand hover:bg-bst-alien text-black font-bold rounded-xl shadow-xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    WhatsApp: 078 104 8790
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        <span class="text-bst-brand">BST</span> Academy
+                    </h3>
+                    <p class="text-gray-400 mb-6">
+                        Empowering the next generation of technologists with expert guidance and proven teaching
+                        methods.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-bst-brand hover:text-black transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:text-white transition-all">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#" class="hover:text-bst-brand transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-bst-brand transition-colors">About Prabath Sir</a></li>
+                        <li><a href="#classes" class="hover:text-bst-brand transition-colors">Class Schedule</a></li>
+                        <li><a href="#results" class="hover:text-bst-brand transition-colors">Student Results</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="text-bst-brand w-5 h-5"></i>
+                            <span>078 104 8790</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="text-bst-brand w-5 h-5"></i>
+                            <span>info@bstclasses.com</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="text-bst-brand w-5 h-5"></i>
+                            <span>Online / Physical Classes</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
+                <p>&copy; 2024 Prabath Gamage. All rights reserved.</p>
+                <p>Designed with <i data-lucide="heart" class="w-3 h-3 text-red-500 inline fill-red-500"></i> for
+                    Education</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <!-- Modal Panel -->
+                <div class="relative transform overflow-hidden rounded-2xl bg-bst-panel border border-white/10 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl opacity-0 scale-95"
+                    id="modal-panel">
+
+                    <!-- Header -->
+                    <div
+                        class="bg-bst-dark/50 px-4 py-4 sm:px-6 flex justify-between items-center border-b border-white/10">
+                        <h3 class="text-xl font-display font-bold text-white flex items-center gap-2">
+                            <i data-lucide="user-plus" class="text-bst-brand"></i>
+                            Student Registration
+                        </h3>
+                        <button type="button" class="text-gray-400 hover:text-white transition-colors"
+                            onclick="closeModal()">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="px-4 py-6 sm:p-6">
+                        <form id="registration-form" class="space-y-6">
+                            <!-- Personal Details Section -->
+                            <div class="space-y-4">
+                                <h4
+                                    class="text-bst-brand text-sm font-bold uppercase tracking-wider mb-4 border-b border-white/10 pb-2">
+                                    Personal Details</h4>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="firstName"
+                                            class="block text-sm font-medium text-gray-300 mb-1">First Name</label>
+                                        <input type="text" id="firstName" name="firstName" required
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                    <div>
+                                        <label for="lastName"
+                                            class="block text-sm font-medium text-gray-300 mb-1">Second Name</label>
+                                        <input type="text" id="lastName" name="lastName" required
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="address"
+                                        class="block text-sm font-medium text-gray-300 mb-1">Address</label>
+                                    <input type="text" id="address" name="address" required
+                                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="mobile" class="block text-sm font-medium text-gray-300 mb-1">Mobile
+                                            Number</label>
+                                        <input type="tel" id="mobile" name="mobile" required
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                    <div>
+                                        <label for="whatsapp"
+                                            class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
+                                        <input type="tel" id="whatsapp" name="whatsapp" required
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Academic Details Section -->
+                            <div class="space-y-4 pt-4">
+                                <h4
+                                    class="text-bst-alien text-sm font-bold uppercase tracking-wider mb-4 border-b border-white/10 pb-2">
+                                    Academic Details</h4>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="school" class="block text-sm font-medium text-gray-300 mb-1">School
+                                            Name</label>
+                                        <input type="text" id="school" name="school" required
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                    <div>
+                                        <label for="district"
+                                            class="block text-sm font-medium text-gray-300 mb-1">District</label>
+                                        <select id="district" name="district"
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors">
+                                            <option value="" disabled selected>Select District</option>
+                                            <option value="Colombo">Colombo</option>
+                                            <option value="Gampaha">Gampaha</option>
+                                            <option value="Kalutara">Kalutara</option>
+                                            <option value="Kandy">Kandy</option>
+                                            <option value="Galle">Galle</option>
+                                            <option value="Matara">Matara</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="examYear" class="block text-sm font-medium text-gray-300 mb-1">Year of
+                                        Examination</label>
+                                    <select id="examYear" name="examYear"
+                                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors">
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Payment Section -->
+                            <div class="space-y-4 pt-4">
+                                <h4
+                                    class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4 border-b border-white/10 pb-2">
+                                    Payment Gateway</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="online" class="peer sr-only"
+                                            checked>
+                                        <div
+                                            class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 peer-checked:border-bst-brand peer-checked:bg-bst-brand/10 transition-all text-center">
+                                            <i data-lucide="credit-card"
+                                                class="mx-auto mb-2 text-gray-400 peer-checked:text-bst-brand"></i>
+                                            <span class="text-sm font-medium text-white">Pay Online</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="paymentMethod" value="bank" class="peer sr-only">
+                                        <div
+                                            class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 peer-checked:border-bst-alien peer-checked:bg-bst-alien/10 transition-all text-center">
+                                            <i data-lucide="landmark"
+                                                class="mx-auto mb-2 text-gray-400 peer-checked:text-bst-alien"></i>
+                                            <span class="text-sm font-medium text-white">Bank Transfer</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="bg-bst-dark/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-white/10">
+                        <button type="button" onclick="submitRegistration()"
+                            class="w-full inline-flex justify-center rounded-lg border border-transparent bg-bst-brand px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-bst-alien focus:outline-none focus:ring-2 focus:ring-bst-brand focus:ring-offset-2 focus:ring-offset-gray-900 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                            Pay & Register
+                        </button>
+                        <button type="button" onclick="closeModal()"
+                            class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-600 bg-transparent px-4 py-2 text-base font-medium text-gray-300 shadow-sm hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger once on load
+
+        // Number Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // Trigger counter when in view
+        let counterTriggered = false;
+        window.addEventListener('scroll', () => {
+            const statsSection = document.querySelector('.counter');
+            if (statsSection && !counterTriggered) {
+                const top = statsSection.getBoundingClientRect().top;
+                if (top < window.innerHeight) {
+                    animateCounters();
+                    counterTriggered = true;
+                }
+            }
+        });
+
+        // --- Registration Modal Functions ---
+        const modal = document.getElementById('registration-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalPanel = document.getElementById('modal-panel');
+        const registrationForm = document.getElementById('registration-form');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalPanel.classList.remove('opacity-0', 'scale-95');
+                modalPanel.classList.add('opacity-100', 'scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalPanel.classList.remove('opacity-100', 'scale-100');
+            modalPanel.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function submitRegistration() {
+            // Get form values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const address = document.getElementById('address').value;
+            const mobile = document.getElementById('mobile').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const school = document.getElementById('school').value;
+            const district = document.getElementById('district').value;
+            const examYear = document.getElementById('examYear').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            // Simple Validation
+            if (!firstName || !lastName || !mobile || !school) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            // Construct WhatsApp Message
+            const message = `*Student Registration Request*%0A%0A` +
+                `*Name:* ${firstName} ${lastName}%0A` +
+                `*Address:* ${address}%0A` +
+                `*School:* ${school}%0A` +
+                `*District:* ${district}%0A` +
+                `*Mobile:* ${mobile}%0A` +
+                `*WhatsApp:* ${whatsapp}%0A` +
+                `*Exam Year:* ${examYear}%0A` +
+                `*Payment Method:* ${paymentMethod === 'online' ? 'Online Payment' : 'Bank Transfer'}`;
+
+            // Open WhatsApp
+            window.open(`https://wa.me/94781048790?text=${message}`, '_blank');
+
+            // Close modal after short delay
+            setTimeout(closeModal, 1000);
+
+            // Optional: Reset form
+            registrationForm.reset();
+        }
+
+        // Close modal when clicking backdrop
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
+    </script>
+</body>
+
+</html>
