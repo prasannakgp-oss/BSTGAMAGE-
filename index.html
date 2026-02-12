@@ -108,6 +108,17 @@
             }
         }
     </style>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="importmap">
+        {
+          "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+          }
+        }
+    </script>
 </head>
 
 <body
@@ -121,7 +132,12 @@
                 <img src="./images/logo_ref.jpg" alt="BST Logo"
                     class="h-24 md:h-28 object-contain mix-blend-screen filter drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] group-hover:drop-shadow-[0_0_12px_rgba(204,255,0,0.8)] transition-all duration-300">
             </a>
-            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <div class="flex md:order-2 space-x-3 md:space-x-4 rtl:space-x-reverse">
+                <button onclick="openLoginModal()"
+                    class="hidden md:flex items-center gap-2 text-white hover:text-bst-brand transition-all duration-300 font-medium text-sm group">
+                    <i data-lucide="user" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    <span>Student Login</span>
+                </button>
                 <a href="https://wa.me/94781048790" target="_blank"
                     class="hidden md:flex items-center gap-2 text-black bg-bst-brand hover:bg-bst-alien focus:ring-4 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/20">
                     <i data-lucide="phone"></i>
@@ -160,6 +176,13 @@
                 <li><a href="#classes" class="block py-2 px-3 text-gray-300 hover:text-bst-brand rounded">Classes</a>
                 </li>
                 <li><a href="#results" class="block py-2 px-3 text-gray-300 hover:text-bst-brand rounded">Results</a>
+                </li>
+                <li>
+                    <button onclick="openLoginModal()"
+                        class="flex items-center gap-2 text-white border border-white/10 hover:border-bst-brand w-full py-2 px-3 rounded-lg transition-colors">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span>Student Login</span>
+                    </button>
                 </li>
                 <li>
                     <a href="https://wa.me/94781048790" target="_blank"
@@ -450,8 +473,124 @@
         </div>
     </section>
 
+    <!-- Student Portal Section (New) -->
+    <section id="portal" class="py-24 relative overflow-hidden hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-4">Student Dashboard</h2>
+                    <p class="text-gray-400">Welcome back, <span id="student-name"
+                            class="text-bst-brand font-bold">Student</span>! Your learning journey continues here.</p>
+                </div>
+                <button onclick="logout()"
+                    class="px-6 py-2 bg-white/5 hover:bg-red-500/20 text-red-500 border border-red-500/30 rounded-lg transition-all flex items-center gap-2">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Course Progress -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4">
+                            <span
+                                class="px-3 py-1 bg-bst-brand/20 text-bst-brand text-xs font-bold rounded-full">ACTIVE</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-6">Continue Learning</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div
+                                    class="aspect-video rounded-xl bg-bst-dark overflow-hidden relative group-hover:scale-[1.02] transition-transform">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+                                        <i data-lucide="play-circle" class="w-12 h-12 text-white opacity-80"></i>
+                                    </div>
+                                    <img src="./images/home_bg.png" class="w-full h-full object-cover blur-[1px]"
+                                        alt="Video Thumbnail">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Unit 04: Genetics & Evolution</h4>
+                                    <p class="text-sm text-gray-400">Lecture 12: Mendelian Inheritance</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span class="text-gray-400">Course Progress</span>
+                                        <span class="text-bst-brand">65%</span>
+                                    </div>
+                                    <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-bst-brand h-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="w-full py-3 bg-bst-brand text-black font-bold rounded-lg hover:bg-bst-alien transition-colors">
+                                    Resume Lesson
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="glass-panel p-6 rounded-2xl hover:border-bst-alien/50 transition-colors">
+                            <i data-lucide="file-text" class="text-bst-alien w-8 h-8 mb-4"></i>
+                            <h4 class="font-bold text-white mb-2">Download Tutes</h4>
+                            <p class="text-sm text-gray-400 mb-4">Access limited edition study materials and pdf notes.
+                            </p>
+                            <button
+                                class="text-bst-alien text-sm font-bold flex items-center gap-2 hover:translate-x-1 transition-transform">
+                                View Files <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="glass-panel p-6 rounded-2xl hover:border-blue-500/50 transition-colors">
+                            <i data-lucide="help-circle" class="text-blue-500 w-8 h-8 mb-4"></i>
+                            <h4 class="font-bold text-white mb-2">Paper Discussions</h4>
+                            <p class="text-sm text-gray-400 mb-4">Watch video discussions for recent assessment papers.
+                            </p>
+                            <button
+                                class="text-blue-500 text-sm font-bold flex items-center gap-2 hover:translate-x-1 transition-transform">
+                                Access Videos <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar / Resources -->
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 rounded-2xl border-bst-brand/20">
+                        <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="bell" class="w-4 h-4 text-bst-brand"></i>
+                            Announcements
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="p-3 bg-white/5 rounded-lg border-l-2 border-bst-brand">
+                                <p class="text-xs text-bst-brand mb-1">Feb 15, 2024</p>
+                                <p class="text-sm text-white font-medium">Monthly Assessment starts at 8:00 AM this
+                                    Sunday.</p>
+                            </div>
+                            <div class="p-3 bg-white/5 rounded-lg border-l-2 border-gray-600">
+                                <p class="text-xs text-gray-500 mb-1">Feb 10, 2024</p>
+                                <p class="text-sm text-gray-300">New Revision Tutes uploaded for Unit 04.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl bg-gradient-to-br from-bst-brand/10 to-transparent">
+                        <h4 class="font-bold text-white mb-2">Need Help?</h4>
+                        <p class="text-sm text-gray-400 mb-4">Direct contact for support and doubts clearing.</p>
+                        <a href="https://wa.me/94781048790"
+                            class="flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white rounded-lg font-bold">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            WhatsApp Mentor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA / Contact -->
-    <section class="py-24 relative overflow-hidden text-center">
+    <section id="cta" class="py-24 relative overflow-hidden text-center">
         <div class="absolute inset-0 bg-bst-brand/5"></div>
         <div class="container mx-auto px-4 relative z-10 reveal">
             <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-8">Ready to Excel in BST?</h2>
@@ -528,6 +667,69 @@
             </div>
         </div>
     </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0" id="login-backdrop"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-2xl bg-bst-panel border border-white/10 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md opacity-0 scale-95"
+                    id="login-panel">
+                    <div class="bg-bst-dark/50 px-6 py-6 border-b border-white/10 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-2xl font-display font-bold text-white">Student Portal</h3>
+                            <p class="text-sm text-gray-400 mt-1">Login to access your courses</p>
+                        </div>
+                        <button onclick="closeLoginModal()" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    <div class="p-8">
+                        <form id="login-form" class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Username / Email</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                                        <i data-lucide="user" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="login-user"
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:border-bst-brand transition-all outline-none"
+                                        placeholder="Enter your username">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                                        <i data-lucide="key" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="password" id="login-pass"
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:border-bst-brand transition-all outline-none"
+                                        placeholder="••••••••">
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <label class="flex items-center gap-2 text-gray-400 cursor-pointer">
+                                    <input type="checkbox" class="accent-bst-brand"> Remember me
+                                </label>
+                                <a href="#" class="text-bst-brand hover:underline">Forgot Password?</a>
+                            </div>
+                            <button type="button" onclick="handleLoginSubmit()"
+                                class="w-full py-4 bg-bst-brand hover:bg-bst-alien text-black font-bold rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+                                Sign In
+                            </button>
+                        </form>
+                    </div>
+                    <div class="px-8 py-4 bg-black/20 border-t border-white/5 text-center">
+                        <p class="text-sm text-gray-500">Don't have an account? <a href="#"
+                                onclick="closeLoginModal(); setTimeout(openModal, 300)"
+                                class="text-bst-brand font-medium">Register Now</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Registration Modal -->
     <div id="registration-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
@@ -663,6 +865,23 @@
                                         <option value="2026">2026</option>
                                     </select>
                                 </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="regEmail"
+                                            class="block text-sm font-medium text-gray-300 mb-1">Account Email</label>
+                                        <input type="email" id="regEmail" name="regEmail" required
+                                            placeholder="example@gmail.com"
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                    <div>
+                                        <label for="regPassword"
+                                            class="block text-sm font-medium text-gray-300 mb-1">Set Password</label>
+                                        <input type="password" id="regPassword" name="regPassword" required
+                                            placeholder="Minimum 6 chars"
+                                            class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-bst-brand focus:ring-1 focus:ring-bst-brand transition-colors placeholder-gray-600">
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Payment Section -->
@@ -673,7 +892,7 @@
                                 <div class="grid grid-cols-2 gap-4">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="paymentMethod" value="online" class="peer sr-only"
-                                            checked>
+                                            checked onchange="togglePaymentDetails()">
                                         <div
                                             class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 peer-checked:border-bst-brand peer-checked:bg-bst-brand/10 transition-all text-center">
                                             <i data-lucide="credit-card"
@@ -682,7 +901,8 @@
                                         </div>
                                     </label>
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="paymentMethod" value="bank" class="peer sr-only">
+                                        <input type="radio" name="paymentMethod" value="bank" class="peer sr-only"
+                                            onchange="togglePaymentDetails()">
                                         <div
                                             class="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 peer-checked:border-bst-alien peer-checked:bg-bst-alien/10 transition-all text-center">
                                             <i data-lucide="landmark"
@@ -690,6 +910,49 @@
                                             <span class="text-sm font-medium text-white">Bank Transfer</span>
                                         </div>
                                     </label>
+                                </div>
+
+                                <!-- Bank Transfer Details (Hidden by default) -->
+                                <div id="bank-details"
+                                    class="hidden mt-6 p-4 rounded-xl bg-white/5 border border-white/10 animate-fade-in">
+                                    <h5 class="text-bst-alien font-bold mb-3 flex items-center gap-2">
+                                        <i data-lucide="info" class="w-4 h-4"></i> Bank Details
+                                    </h5>
+                                    <div class="space-y-2 text-sm text-gray-300 mb-4 bg-black/20 p-3 rounded-lg">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Bank:</span>
+                                            <span class="font-medium text-white">Sampath Bank PLC</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Branch:</span>
+                                            <span class="font-medium text-white">Dehiattakandiya Branch</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Account No:</span>
+                                            <span class="font-medium text-white font-mono tracking-wide">1167 5257
+                                                6389</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Account Name:</span>
+                                            <span class="font-medium text-white">Prabath Gamage</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="block text-sm font-medium text-gray-300">Upload Payment
+                                            Slip</label>
+                                        <div class="relative">
+                                            <input type="file" id="paymentSlip" name="paymentSlip" accept="image/*,.pdf"
+                                                class="block w-full text-sm text-gray-400
+                                                file:mr-4 file:py-2 file:px-4
+                                                file:rounded-lg file:border-0
+                                                file:text-sm file:font-semibold
+                                                file:bg-bst-alien/10 file:text-bst-alien
+                                                hover:file:bg-bst-alien/20
+                                                cursor-pointer border border-white/10 rounded-lg bg-black/20 focus:outline-none focus:border-bst-alien transition-colors">
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1">Accepted formats: JPG, PNG, PDF</p>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -712,138 +975,220 @@
     </div>
 
     <script>
-        // Initialize Icons
+        // UI Logic & Non-Module Functions
         lucide.createIcons();
 
-        // Mobile Menu Toggle
+        // Navbar & Menu
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-
         if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            menuToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
         }
 
-        // Scroll Reveal Animation
+        // Scroll Reveal
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+                if (elementTop < windowHeight - 150) reveals[i].classList.add("active");
             }
         }
         window.addEventListener("scroll", reveal);
-        reveal(); // Trigger once on load
+        reveal();
 
-        // Number Counter Animation
-        const counters = document.querySelectorAll('.counter');
-        const speed = 200;
-
+        // Counters
         const animateCounters = () => {
-            counters.forEach(counter => {
+            document.querySelectorAll('.counter').forEach(counter => {
                 const updateCount = () => {
                     const target = +counter.getAttribute('data-target');
                     const count = +counter.innerText;
-                    const inc = target / speed;
-
                     if (count < target) {
-                        counter.innerText = Math.ceil(count + inc);
+                        counter.innerText = Math.ceil(count + (target / 200));
                         setTimeout(updateCount, 20);
-                    } else {
-                        counter.innerText = target;
-                    }
+                    } else counter.innerText = target;
                 };
                 updateCount();
             });
-        }
+        };
 
-        // Trigger counter when in view
         let counterTriggered = false;
         window.addEventListener('scroll', () => {
-            const statsSection = document.querySelector('.counter');
-            if (statsSection && !counterTriggered) {
-                const top = statsSection.getBoundingClientRect().top;
-                if (top < window.innerHeight) {
-                    animateCounters();
-                    counterTriggered = true;
-                }
+            const stats = document.querySelector('.counter');
+            if (stats && !counterTriggered && stats.getBoundingClientRect().top < window.innerHeight) {
+                animateCounters();
+                counterTriggered = true;
             }
         });
 
-        // --- Registration Modal Functions ---
+        // Modal Management
         const modal = document.getElementById('registration-modal');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalPanel = document.getElementById('modal-panel');
+        const loginModal = document.getElementById('login-modal');
+        const loginBackdrop = document.getElementById('login-backdrop');
+        const loginPanel = document.getElementById('login-panel');
         const registrationForm = document.getElementById('registration-form');
 
-        function openModal() {
+        window.openModal = () => {
             modal.classList.remove('hidden');
-            // Small delay to allow display:block to apply before opacity transition
             setTimeout(() => {
                 modalBackdrop.classList.remove('opacity-0');
-                modalPanel.classList.remove('opacity-0', 'scale-95');
                 modalPanel.classList.add('opacity-100', 'scale-100');
             }, 10);
-        }
+        };
 
-        function closeModal() {
+        window.closeModal = () => {
             modalBackdrop.classList.add('opacity-0');
             modalPanel.classList.remove('opacity-100', 'scale-100');
-            modalPanel.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        };
 
+        window.openLoginModal = () => {
+            loginModal.classList.remove('hidden');
             setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+                loginBackdrop.classList.remove('opacity-0');
+                loginPanel.classList.add('opacity-100', 'scale-100');
+            }, 10);
+        };
+
+        window.closeLoginModal = () => {
+            loginBackdrop.classList.add('opacity-0');
+            loginPanel.classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => loginModal.classList.add('hidden'), 300);
+        };
+
+        window.togglePaymentDetails = () => {
+            const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const bankDetails = document.getElementById('bank-details');
+            method === 'bank' ? bankDetails.classList.remove('hidden') : bankDetails.classList.add('hidden');
+        };
+
+        function showDashboard(username) {
+            document.querySelectorAll('section:not(#portal)').forEach(s => s.classList.add('hidden'));
+            document.getElementById('portal').classList.remove('hidden');
+            document.getElementById('student-name').innerText = username;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function submitRegistration() {
-            // Get form values
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const address = document.getElementById('address').value;
-            const mobile = document.getElementById('mobile').value;
-            const whatsapp = document.getElementById('whatsapp').value;
-            const school = document.getElementById('school').value;
-            const district = document.getElementById('district').value;
-            const examYear = document.getElementById('examYear').value;
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        window.showDashboard = showDashboard;
+    </script>
 
-            // Simple Validation
-            if (!firstName || !lastName || !mobile || !school) {
-                alert("Please fill in all required fields.");
+    <script type="module">
+        // Firebase Logic
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // CONFIGURATION: Paste your keys here from Firebase Project Settings
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Standard JS assignments for onclick handlers
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.handleLoginSubmit = handleLoginSubmit;
+        window.submitRegistration = submitRegistration;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.togglePaymentDetails = togglePaymentDetails;
+        window.logout = logout;
+
+        async function handleLoginSubmit() {
+            const email = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+
+            if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+                alert("Setup Required: Please paste your Firebase keys in the code (line 1100).");
                 return;
             }
 
-            // Construct WhatsApp Message
-            const message = `*Student Registration Request*%0A%0A` +
-                `*Name:* ${firstName} ${lastName}%0A` +
-                `*Address:* ${address}%0A` +
-                `*School:* ${school}%0A` +
-                `*District:* ${district}%0A` +
-                `*Mobile:* ${mobile}%0A` +
-                `*WhatsApp:* ${whatsapp}%0A` +
-                `*Exam Year:* ${examYear}%0A` +
-                `*Payment Method:* ${paymentMethod === 'online' ? 'Online Payment' : 'Bank Transfer'}`;
+            if (!email || !pass) {
+                alert("Please enter both email and password.");
+                return;
+            }
 
-            // Open WhatsApp
-            window.open(`https://wa.me/94781048790?text=${message}`, '_blank');
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                const userDoc = await getDoc(doc(db, "students", userCredential.user.uid));
 
-            // Close modal after short delay
-            setTimeout(closeModal, 1000);
-
-            // Optional: Reset form
-            registrationForm.reset();
+                if (userDoc.exists() && userDoc.data().status === "approved") {
+                    window.showDashboard(userDoc.data().firstName);
+                    window.closeLoginModal();
+                } else {
+                    await signOut(auth);
+                    alert("Account PENDING APPROVAL. Please notify Sir via WhatsApp once you have paid.");
+                }
+            } catch (e) {
+                alert("Login Error: " + e.message);
+            }
         }
 
-        // Close modal when clicking backdrop
-        if (modalBackdrop) {
-            modalBackdrop.addEventListener('click', closeModal);
+        async function submitRegistration() {
+            if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+                alert("Setup Required: Please paste your Firebase keys in the code (line 1100).");
+                return;
+            }
+
+            const btn = event.target;
+            const original = btn.innerText;
+            const fname = document.getElementById('firstName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPassword').value;
+
+            if (!email || !pass || !fname) {
+                alert("Please fill in Name, Email, and Password.");
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                btn.innerText = "Registering...";
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "students", cred.user.uid), {
+                    uid: cred.user.uid,
+                    firstName: fname,
+                    email: email,
+                    status: "pending",
+                    createdAt: new Date().toISOString()
+                });
+
+                const msg = `*NEW STUDENT*%0A*Name:* ${fname}%0A*Email:* ${email}%0A*Status:* Waiting for Approval`;
+                window.open(`https://wa.me/94781048790?text=${msg}`, '_blank');
+
+                alert("Registration Successful! Account is PENDING APPROVAL.");
+                window.closeModal();
+            } catch (e) {
+                alert("Error: " + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = original;
+            }
         }
+
+        async function logout() {
+            await signOut(auth);
+            window.location.reload();
+        }
+
+        // Expose to window
+        window.handleLoginSubmit = handleLoginSubmit;
+        window.submitRegistration = submitRegistration;
+        window.logout = logout;
+
+        // Close modal handle
+        if (modalBackdrop) modalBackdrop.addEventListener('click', window.closeModal);
+        if (loginBackdrop) loginBackdrop.addEventListener('click', window.closeLoginModal);
     </script>
 </body>
 
